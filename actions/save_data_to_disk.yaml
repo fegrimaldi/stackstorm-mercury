@@ -1,0 +1,15 @@
+---
+name: "save_data_to_disk"
+runner_type: "python-script"
+description: "Action to save text (CSV) or JSON payload to disk."
+entry_point: "save_data_to_disk.py"
+enabled: true
+parameters:
+  data:
+    type: "string"
+    description: "The text (CSV) or JSON payload to save."
+    required: true
+  file_path:
+    type: "string"
+    description: "The file path to save the text or JSON payload. Must exist and be writeable by user st2."
+    required: true

@@ -1,0 +1,18 @@
+---
+tenant_id:
+  description: "Tenant ID."
+  type: "string"
+  required: true
+client_secret:
+  description: "Client secret."
+  type: "string"
+  secret: true
+  required: true
+client_id:
+  description: "Client ID"
+  type: "string"
+  required: true
+from_email:
+  description: "Email sender username."
+  type: "string"
+  required: true

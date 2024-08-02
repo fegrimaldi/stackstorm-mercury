@@ -1,0 +1,49 @@
+---
+name: "send_email"
+description: "Sends an email using Microsoft Graph API with OAUTH authentication. Supports multiple attachments."
+runner_type: "python-script"
+enabled: true
+entry_point: "send_email.py"
+parameters:
+  to:
+    type: "array"
+    description: "List of recipients email addresses separated by commas."
+    required: true
+    position: 1
+  cc:
+    type: "array"
+    description: "List of recipient email addresses separated by commas."
+    required: false
+    position: 2    
+  subject:
+    type: "string"
+    description: "Email subject."
+    required: true
+    position: 3
+  body:
+    type: "string"
+    description: "Email body."
+    required: true
+    position: 4
+  attachments:
+    type: "array"
+    description: "List of attachment file paths separated by commas."
+    required: false
+    position: 5
+    items:
+      type: "string"
+  mime_type:
+    type: "string"
+    description: "The mime type of the message (HTML or Text). Default is Text."
+    default: "Text"
+    position: 6
+    enum:
+      - "Text"
+      - "HTML"
+  save_to_sent_items:
+    type: "boolean"
+    description: "Whether or not to save email to sent items. Default is true."
+    default: true
+    required: false
+    position: 7
+

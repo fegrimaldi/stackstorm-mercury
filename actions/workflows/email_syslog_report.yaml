@@ -1,0 +1,56 @@
+version: 1.0
+
+description: Runs a device syslog query (mysql), formats results to csv, saves it to disk, then emails the report as an attachment.
+
+input:
+  - device_name: string
+
+vars:
+  - report: null
+
+output:
+  - result: <% ctx().result %>
+
+tasks:
+  run_qry:
+    action: mysql.select
+    input:
+      query: 'SELECT DeviceReportedTime, Facility, FromHost, SysLogTag, Message FROM SystemEvents WHERE FromHost = "<% ctx().device_name %>";'
+      connection: syslog
+    next:
+      - when: <% succeeded() %>
+        publish: 
+          - qry_results: <% result().result or [] %>
+        do: format_csv
+  format_csv:
+    action: csv.format
+    input:
+      data: <% ctx().qry_results %>
+    next:
+      - when: <% succeeded() %>
+        publish: 
+         - report: <% result().result %>
+        do: save_csv
+  save_csv:
+    action: mercury.save_data_to_disk
+    input:
+      data: <% ctx().report %>
+      file_path: "/opt/gluware/public/<% ctx().device_name %>_syslog_report.csv"
+    next:
+      - when: <% succeeded() %>
+        publish: 
+         - attachment_path: <% result().result %>
+        do: email_csv
+  email_csv:
+    action: mercury.send_email
+    input:
+      to: ["fgrimaldi@gluware.com"]
+      cc: []
+      subject: "<% ctx().device_name %> Syslog Report"
+      body: "<h3>Syslog Report</h3><p>Attached is a current syslog report for device <b><% ctx().device_name %></b>.</p>"
+      attachments: ["<% ctx().attachment_path %>"]
+      mime_type: "HTML"
+    next:
+      - when: <% succeeded() %>
+        publish: 
+         - result: "success"       

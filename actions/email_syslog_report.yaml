@@ -1,0 +1,12 @@
+---
+name: email_syslog_report
+pack: mercury
+description: Runs a device syslog query (mysql), formats results to csv, saves it to disk, then emails the report as an attachment. 
+runner_type: orquesta
+entry_point: workflows/email_syslog_report.yaml
+enabled: true
+parameters:
+  device_name:
+    required: true
+    type: string
+    description: The device or host's name.

@@ -1,0 +1,34 @@
+---
+pack: mercury
+ref: mercury.nagios_email_alert
+name: nagios_email_alert
+uid: rule:mercury:nagios_email_alert
+tags: []
+type:
+  ref: standard
+  parameters: {}
+enabled: true
+trigger:
+  type: nagios.service_state_change
+  ref: nagios.service_state_change
+  description: Trigger type for nagios service state change event.
+  parameters: {}
+metadata_file: ''
+context:
+  user: st2admin
+criteria:
+  trigger.state:
+    pattern: "^CRITICAL|DOWN|OK$"
+    type: regex
+  trigger.state_type:
+    pattern: HARD
+    type: eq
+action:
+  ref: mercury.send_email
+  description: Sends an email.
+  parameters:
+    to: ["fgrimaldi@gluware.com"]
+    cc: []
+    subject: "Nagios Alert: {{trigger.host}} is {{trigger.state}}"
+    body: "<h3>Nagios Alert:</h3><p>Host: {{trigger.host}}</p>State: {{trigger.state}}</br>Service: {{trigger.service}}</br>Message: {{trigger.msg}}"
+    mime_type: "HTML"
