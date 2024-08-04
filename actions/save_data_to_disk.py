@@ -24,28 +24,32 @@ class SaveDataToDisk(Action):
         file_path = parameters["file_path"]
         data = parameters["data"]
 
-        # Ensure data is in the correct format
-        # if not isinstance(data, str):
-        #     self.logger.error("Data is not a string.")
-        #     sys.exit(1)
-
-
         try:
-            # ? Create directory if it doesn't exist?
-            # os.makedirs(os.path.dirname(file_path), exist_ok=True)
+            # ? Ensure the directory exists
+            #os.makedirs(os.path.dirname(file_path), exist_ok=True)
 
-            # Try to detect if the string is a JSON object
-            try:
-                json_data = json.loads(data)
+            # Process data based on its type
+            if isinstance(data, str):
+                # Try to detect if the string is a JSON object
+                try:
+                    json_data = json.loads(data)
+                    with open(file_path, 'w', encoding='utf-8') as f:
+                        json.dump(json_data, f, indent=4)
+                    self.logger.info(f"JSON data (from string) saved to {file_path}")
+                except json.JSONDecodeError:
+                    with open(file_path, 'w', encoding='utf-8') as f:
+                        f.write(data)
+                    self.logger.info(f"Text (CSV) data saved to {file_path}")
+            elif isinstance(data, (dict, list)):
+                # Save dictionary or list as JSON
                 with open(file_path, 'w', encoding='utf-8') as f:
-                    json.dump(json_data, f, indent=4)
+                    json.dump(data, f, indent=4)
                 self.logger.info(f"JSON data saved to {file_path}")
-            except json.JSONDecodeError:
-                with open(file_path, 'w', encoding='utf-8') as f:
-                    f.write(data)
-                self.logger.info(f"Text (CSV) data saved to {file_path}")
-
+            else:
+                raise ValueError("Data must be a string, dictionary, or list.")
             return file_path
         except Exception as e:
             self.logger.error(f"Failed to save data payload: {str(e)}")
             sys.exit(1)
+
+
