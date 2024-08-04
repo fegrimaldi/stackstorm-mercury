@@ -25,9 +25,9 @@ class SaveDataToDisk(Action):
         data = parameters["data"]
 
         # Ensure data is in the correct format
-        if not isinstance(data, str):
-            self.logger.error("Data is not a string.")
-            sys.exit(1)
+        # if not isinstance(data, str):
+        #     self.logger.error("Data is not a string.")
+        #     sys.exit(1)
 
 
         try:
