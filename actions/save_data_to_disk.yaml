@@ -6,8 +6,10 @@ entry_point: "save_data_to_disk.py"
 enabled: true
 parameters:
   data:
-    type: "string"
-    description: "The text (CSV) or JSON payload to save."
+    anyOf:
+      - type: "string"
+      - type: "object"
+      - type: "array"
     required: true
   file_path:
     type: "string"
