@@ -1,0 +1,44 @@
+---
+name: "send_gmail"
+description: "Sends an email using Google API with OAUTH authentication. Supports multiple attachments."
+runner_type: "python-script"
+enabled: true
+entry_point: "send_gmail.py"
+parameters:
+  to:
+    type: "array"
+    description: "List of recipients email addresses separated by commas."
+    required: true
+    position: 1
+  cc:
+    type: "array"
+    description: "List of recipient email addresses separated by commas."
+    required: false
+    position: 2    
+  subject:
+    type: "string"
+    description: "Email subject."
+    required: true
+    position: 3
+  body:
+    type: "string"
+    description: "Email body."
+    required: true
+    position: 4
+  attachments:
+    type: "array"
+    description: "List of attachment file paths separated by commas."
+    required: false
+    position: 5
+    items:
+      type: "string"
+  mime_type:
+    type: "string"
+    description: "The mime type of the message (HTML or plain). Default is plain."
+    default: "plain"
+    position: 6
+    enum:
+      - "plain"
+      - "html"
+
+
