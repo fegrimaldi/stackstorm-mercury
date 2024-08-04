@@ -6,12 +6,10 @@ StackStorm Mercury is a collection of StackStorm actions, workflows, and rules i
 
 The repository consists of the following components:
 
-- **`actions/`**: This directory contains specific actions implemented using the base action classes defined in `lib/action.py`.
+- **`actions/`**: This directory contains specific actions implemented using the st2 base action class.
   - `send_email`: Uses the MS Graph API to send an email using OAUTH authentication.
-  - `save_data_to_disk.py`: Saves text (CSV) or JSON to disk. Useful when saving logs to a temp directory, then attaching the log file to an email. The directory must exist and be writeable by user st2.
-
-- **`actions/lib/`**: This directory contains the base action. It includes the following files:
-  - `action.py`: Defines base action classes that serve as foundations for implementing specific actions related to email function. Loads configuration data and obtains an MS Graph API Token using OAUTH.
+  - `send_gmail`: Uses the Google APIs to send an email using OAUTH authentication.
+  - `save_data_to_disk.py`: Saves text (CSV), list or dictionary to disk. Useful when saving logs to a temp directory, then attaching the log file to an email. The directory must exist and be writeable by user st2.
 
 - **`actions/workflows`**: Workflows
   - `email_syslog_report`: Runs a device syslog query (mysql), formats results to csv, saves it to disk, then emails the report as an attachment. As is, requires the use of a MySQL server Syslog database (rsyslog, rsyslog-mysql). Usually uses Adiscon LogAnalyzer as a web front end. Requires the mysql and csv pack. Orchestrates the following actions:
@@ -21,7 +19,7 @@ The repository consists of the following components:
     - `mercury.send_email`
 
 - **`rules`**: Rules (triggers)
-  - `nagios_alert`: Sends an alert email in response to a Nagios service state change.
+  - `nagios_email_alert`: Sends an alert email in response to a Nagios service state change.
   
 - **`README.md`**: This file provides an overview of the repository and its contents.
 
@@ -33,6 +31,10 @@ This pack requires the following StackStorm Packs for full functionality. Note t
 
 1. [Nagios](https://github.com/StackStorm-Exchange/stackstorm-nagios)
 2. [MySQL](https://github.com/StackStorm-Exchange/stackstorm-mysql)
+    1. If you are developing in an st2-docker container, this pack will fail to install until you install the following packages in both the st2client and st2actionrunner containers first. 
+
+        ``sudo apt install pkg-config libmysqlclient-dev build-essential``
+    
 3. [CSV](https://github.com/StackStorm-Exchange/stackstorm-csv)
 
 ## Getting Started

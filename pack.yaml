@@ -1,7 +1,11 @@
 ---
 name: mercury
-description: SilverWolf Technology MS API Email & Utilities.
-version: 1.0.0
+description: SilverWolf Technology MS and Google API Email & Utilities.
+version: 1.1.0
+dependencies:
+  - mysql
+  - csv
+  - nagios
 author: Fabricio E. Grimaldi
 email: 34732205+fegrimaldi@users.noreply.github.com
 python_versions:

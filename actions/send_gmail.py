@@ -35,7 +35,7 @@ class SendEmail(Action):
         )
 
 
-        # Not Working: Refresh the token if it has expired
+        # Refresh the token if it has expired, which it has
         if self.creds and not self.creds.expiry and self.creds._refresh_token:
             try:
                 self.creds.refresh(Request())
@@ -85,7 +85,7 @@ class SendEmail(Action):
                 json=message
             )
             response.raise_for_status()
-            self.logger.info(f'Message Id: {response.json().get("id")}')
+            self.logger.info(f'Sent! Message Id: {response.json().get("id")}')
             return response.json()
         except (requests.exceptions.HTTPError, 
                 requests.exceptions.ConnectionError, 
