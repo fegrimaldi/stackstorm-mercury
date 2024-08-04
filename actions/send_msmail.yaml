@@ -1,9 +1,9 @@
 ---
-name: "send_email"
+name: "send_msmail"
 description: "Sends an email using Microsoft Graph API with OAUTH authentication. Supports multiple attachments."
 runner_type: "python-script"
 enabled: true
-entry_point: "send_email.py"
+entry_point: "send_msmail.py"
 parameters:
   to:
     type: "array"
