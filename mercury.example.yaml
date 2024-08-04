@@ -1,5 +1,10 @@
 ---
-tenant_id: ""
-client_id: ""
-client_secret: ""
-from_email: ""
+msmail:
+  tenant_id: ""
+  client_id: ""
+  client_secret: ""
+  from_email: ""
+gmail:
+  client_id: ""
+  client_secret: ""
+  refresh_token: ""

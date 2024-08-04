@@ -24,7 +24,7 @@ criteria:
     pattern: HARD
     type: eq
 action:
-  ref: mercury.send_email
+  ref: mercury.send_msemail
   description: Sends an email.
   parameters:
     to: ["fgrimaldi@gluware.com"]

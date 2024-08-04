@@ -16,15 +16,15 @@ SCOPES = ['https://www.googleapis.com/auth/gmail.send']
 class SendEmail(Action):
     def __init__(self, config):
         super(SendEmail, self).__init__(config)
-        self.config = config
+        self.config = config["gmail"]
         self.creds = None
         self.get_credentials()
 
     def get_credentials(self):
         """Gets valid user credentials from the StackStorm configuration."""
-        client_id = self.config['email']['client_id']
-        client_secret = self.config['email']['client_secret']
-        refresh_token = self.config['email']['refresh_token']
+        client_id = self.config['client_id']
+        client_secret = self.config['client_secret']
+        refresh_token = self.config['refresh_token']
 
         self.creds = Credentials(
             None,
@@ -34,9 +34,16 @@ class SendEmail(Action):
             token_uri='https://oauth2.googleapis.com/token'
         )
 
-        # Refresh the token if it has expired
-        if self.creds and self.creds.expired and self.creds.refresh_token:
-            self.creds.refresh(Request())
+
+        # Not Working: Refresh the token if it has expired
+        if self.creds and not self.creds.expiry and self.creds._refresh_token:
+            try:
+                self.creds.refresh(Request())
+                self.logger.info(f"New Access Token issued.")
+            except Exception as e:
+                self.loggger.error(f"Error refreshing token: {e}")
+
+
 
     def create_message(self, to, cc, subject, body, mime_type, attachments):
         """Create a message for an email with optional attachments."""
@@ -99,25 +106,6 @@ class SendEmail(Action):
         attachments = parameters.get('attachments', [])
 
         message = self.create_message(to, cc, subject, body, mime_type, attachments)
-        result = self.send_message(self.config['email_from'], message)
+        result = self.send_message("me", message)
         return result
 
-if __name__ == "__main__":
-    # Example usage
-    action = SendEmail({
-        'email': {
-            'client_id': 'YOUR_CLIENT_ID',
-            'client_secret': 'YOUR_CLIENT_SECRET',
-            'refresh_token': 'YOUR_REFRESH_TOKEN',
-            'email_from': 'sender@example.com'
-        }
-    })
-    result = action.run(
-        to=["example@example.com", "example2@example.com"],
-        cc=["cc1@example.com", "cc2@example.com"],
-        subject="Test Subject",
-        body="<h1>Test Body</h1>",
-        mime_type="html",
-        attachments=["/path/to/attachment1", "/path/to/attachment2"]
-    )
-    print(result)

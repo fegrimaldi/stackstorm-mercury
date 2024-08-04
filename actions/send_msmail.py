@@ -18,10 +18,39 @@ import requests
 import pathlib
 import base64
 import sys
-from lib import action
+import msal
+from st2common.runners.base_action import Action
 
 
-class SendEmail(action.BaseAction):
+class SendEmail(Action):
+    def __init__(self, config):
+        super(SendEmail, self).__init__(config)
+        self.config = config["msmail"]
+        self.tenant_id = self.config["tenant_id"]
+        self.client_id = self.config["client_id"]
+        self.client_secret = self.config["client_secret"]
+        self.from_email = self.config["from_email"]
+
+        # MSAL ConfidentialClientApplication for token acquisition
+        self._app = msal.ConfidentialClientApplication(
+            self.client_id,
+            authority=f"https://login.microsoftonline.com/{self.tenant_id}",
+            client_credential=self.client_secret
+        )
+
+        self.token = self.get_token()
+
+    def get_token(self):
+        scope = ["https://graph.microsoft.com/.default"]
+        result = self._app.acquire_token_for_client(scopes=scope)
+        if "access_token" in result:
+            self.logger.info("Successfully obtained token")
+            return result["access_token"]
+        else:
+            self.logger.error(f"Failed to obtain token: {result.get('error_description', 'Unknown error')}")
+            sys.exit(1)
+
+
     def run(self, **parameters):
         to_list = parameters["to"]
         cc_list = parameters["cc"]
