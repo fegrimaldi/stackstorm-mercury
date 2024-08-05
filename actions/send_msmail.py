@@ -22,9 +22,9 @@ import msal
 from st2common.runners.base_action import Action
 
 
-class SendEmail(Action):
+class SendMsMail(Action):
     def __init__(self, config):
-        super(SendEmail, self).__init__(config)
+        super(SendMsMail, self).__init__(config)
         self.config = config["msmail"]
         self.tenant_id = self.config["tenant_id"]
         self.client_id = self.config["client_id"]

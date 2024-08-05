@@ -13,9 +13,9 @@ from st2common.runners.base_action import Action
 
 SCOPES = ['https://www.googleapis.com/auth/gmail.send']
 
-class SendEmail(Action):
+class SendGmail(Action):
     def __init__(self, config):
-        super(SendEmail, self).__init__(config)
+        super(SendGmail, self).__init__(config)
         self.config = config["gmail"]
         self.creds = None
         self.get_credentials()
