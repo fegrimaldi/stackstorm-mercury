@@ -42,7 +42,7 @@ tasks:
          - attachment_path: <% result().result %>
         do: email_csv
   email_csv:
-    action: mercury.send_email
+    action: mercury.send_msmail
     input:
       to: ["fgrimaldi@gluware.com"]
       cc: []

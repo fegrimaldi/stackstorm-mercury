@@ -24,11 +24,11 @@ criteria:
     pattern: HARD
     type: eq
 action:
-  ref: mercury.send_msemail
+  ref: mercury.send_msmail
   description: Sends an email.
   parameters:
     to: ["fgrimaldi@gluware.com"]
     cc: []
     subject: "Nagios Alert: {{trigger.host}} is {{trigger.state}}"
-    body: "<h3>Nagios Alert:</h3><p>Host: {{trigger.host}}</p>State: {{trigger.state}}</br>Service: {{trigger.service}}</br>Message: {{trigger.msg}}"
+    body: "<h3>Nagios Alert!:</h3><p>Host: {{trigger.host}}</p>State: {{trigger.state}}</br>Service: {{trigger.service}}</br>Message: {{trigger.msg}}"
     mime_type: "HTML"
