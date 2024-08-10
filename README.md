@@ -9,8 +9,6 @@ The repository consists of the following components:
 - **`actions/`**: This directory contains specific actions implemented using the st2 base action class.
   - `send_msmail`: Uses the MS Graph API to send an email using OAUTH authentication.
   - `send_gmail`: Uses the Google APIs to send an email using OAUTH authentication.
-  - `save_data_to_disk.py`: Saves text (CSV), list or dictionary to disk. Useful when saving logs to a temp directory, then attaching the log file to an email. The directory must exist and be writeable by user st2.
-
   
 - **`README.md`**: This file provides an overview of the repository and its contents.
 
