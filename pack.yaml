@@ -1,17 +1,13 @@
 ---
 name: Mercury Email
 ref: mercury
-description: SilverWolf Technology MS and Google API Email & Utilities.
+description: Microsoft and Google API OAuth Email.
 keywords:
-  - silverwolf
-  - mercury
   - email
-  - google
-  - microsoft
-  - api
-  - utilities
   - oauth
-version: 1.1.1
+  - microsoft
+  - google
+version: 1.2.0
 author: Silver Wolf Technology
 email: info@silverwolftechnology.com
 python_versions:
